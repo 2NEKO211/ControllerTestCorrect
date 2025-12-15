@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <!-- JInput：核心 API + Windows 原生插件（带 DLL） -->
+    <dependencies>
+        <!-- JInput Core API（有 net.java.games.input 这些类） -->
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>coreapi</artifactId>
+            <version>2.0.10</version>
+        </dependency>
+
+        <!-- Windows 原生 DLL 打包成 jar -->
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>windows-plugin</artifactId>
+            <version>2.0.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>windows-plugin</artifactId>
+            <version>2.0.10</version>
+            <classifier>natives-windows</classifier>
+        </dependency>
+        
+    </dependencies>
+
+   
+</project>
