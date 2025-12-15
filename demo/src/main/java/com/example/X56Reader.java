@@ -14,14 +14,14 @@ public class X56Reader {
         // 1. 列出所有控制器
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 
-        System.out.println("检测到的控制器数量 = " + controllers.length);
+        System.out.println("Device detected = " + controllers.length);
         for (int i = 0; i < controllers.length; i++) {
             Controller c = controllers[i];
-            System.out.println(i + ": " + c.getName() + " / 类型 = " + c.getType());
+            System.out.println(i + ": " + c.getName() + " / type = " + c.getType());
         }
 
         if (controllers.length == 0) {
-            System.out.println("一个控制器都没检测到。");
+            System.out.println("No device detected.");
             return;
         }
 
@@ -63,14 +63,14 @@ public class X56Reader {
 
                 throttle = c;
                 throttleIndex = i;
-                System.out.println("  -> 选择这个作为 Throttle 设备: "
-                        + c.getName() + " / 类型 = " + c.getType());
+                System.out.println("  -> Throttle choosed: "
+                        + c.getName() + " / type = " + c.getType());
                 break;
             }
         }
 
         if (stick == null && throttle == null) {
-            System.out.println("\n既没找到 Stick，也没找到 Throttle，程序退出。");
+            System.out.println("\nDevice Not Found");
             return;
         }
 
@@ -80,8 +80,8 @@ public class X56Reader {
 
         if (stick != null) {
             stickComps = stick.getComponents();
-            System.out.println("\n=== Stick 组件列表（index = " + stickIndex + "）===");
-            System.out.println("Stick 组件数量 = " + stickComps.length);
+            System.out.println("\n=== Stick components（index = " + stickIndex + "）===");
+            System.out.println("Stick components amount = " + stickComps.length);
             for (int i = 0; i < stickComps.length; i++) {
                 Component comp = stickComps[i];
                 System.out.println("  [S" + i + "] id=" + comp.getIdentifier().getName()
@@ -89,13 +89,13 @@ public class X56Reader {
             }
 
         } else {
-            System.out.println("\n未找到 Stick 设备。");
+            System.out.println("\n Stick Not Found.");
         }
 
         if (throttle != null) {
             throttleComps = throttle.getComponents();
-            System.out.println("\n=== Throttle 组件列表（index = " + throttleIndex + "）===");
-            System.out.println("Throttle 组件数量 = " + throttleComps.length);
+            System.out.println("\n=== Throttle components（index = " + throttleIndex + "）===");
+            System.out.println("Throttle components amount = " + throttleComps.length);
             for (int i = 0; i < throttleComps.length; i++) {
                 Component comp = throttleComps[i];
                 System.out.println("  [T" + i + "] name=" + comp.getName()
@@ -103,10 +103,10 @@ public class X56Reader {
                         + ", analog=" + comp.isAnalog());
             }
         } else {
-            System.out.println("\n未找到 Throttle 设备。");
+            System.out.println("\n Throttle Not Found.");
         }
 
-        System.out.println("\n开始读取 Stick + Throttle 的按键和轴变化（有变化就输出），按 Ctrl+C 停止。\n");
+        System.out.println("\n，Press Ctrl+C to stop\n");
 
         float[] lastStick = stickComps != null ? new float[stickComps.length] : null;
         float[] lastThrottle = throttleComps != null ? new float[throttleComps.length] : null;
@@ -117,7 +117,7 @@ public class X56Reader {
             // ----- 轮询 Stick -----
             if (stick != null && stickComps != null) {
                 if (!stick.poll()) {
-                    System.out.println("Stick 设备丢失连接。");
+                    System.out.println("Stick Lost connection");
                 } else {
                     for (int i = 0; i < stickComps.length; i++) {
                         Component comp = stickComps[i];
@@ -137,7 +137,7 @@ public class X56Reader {
             // ----- 轮询 Throttle -----
             if (throttle != null && throttleComps != null) {
                 if (!throttle.poll()) {
-                    System.out.println("Throttle 设备丢失连接。");
+                    System.out.println("Throttle Lost connection");
                 } else {
                     for (int i = 0; i < throttleComps.length; i++) {
                         Component comp = throttleComps[i];
@@ -164,14 +164,14 @@ public class X56Reader {
         String id = comp.getIdentifier().getName();
 
         if (!comp.isAnalog()) {
-            System.out.println(device + " 按钮变化: [" + index + "] id=" + id
+            System.out.println(device + " botton pressed: [" + index + "] id=" + id
                     + ", value=" + value
-                    + (value > 0.5f ? "  <-- 按下" : "  <-- 松开"));
+                    + (value > 0.5f ? "  <-- pressed" : "  <-- released"));
         } else if (comp.getIdentifier() == Component.Identifier.Axis.POV) {
-            System.out.println(device + " POV(HAT) 变化: [" + index + "] id=" + id
+            System.out.println(device + " POV(HAT) changed: [" + index + "] id=" + id
                     + ", value=" + value);
         } else {
-            System.out.println(device + " 轴变化: [" + index + "] id=" + id
+            System.out.println(device + " axis changed: [" + index + "] id=" + id
                     + ", value=" + value);
         }
     }
